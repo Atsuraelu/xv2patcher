@@ -142,11 +142,11 @@
 		<Notify value="NULL" />
 	</Patch>
 	
-	<!-- 0xF8: hp -->
-	<!-- 0x104: ki -->
-	<Patch name="CheckBattleMobAlign3" type="notify" search_start="0x165800" comment="addr 1.15" >
-		<Instruction code="8B 83 F8 00 00 00" comment="mov eax, [rbx+0F8h]" />
-		<Instruction code="48 8D 93 04 01 00 00" comment="lea rdx, [rbx+104h]" />
+	<!-- 0xFC: hp -->
+	<!-- 0x108: ki -->
+	<Patch name="CheckBattleMobAlign3" type="notify" search_start="0x165800" comment="addr 1.20" >
+		<Instruction code="8B 83 FC 00 00 00" comment="mov eax, [rbx+0FCh]" />
+		<Instruction code="48 8D 93 08 01 00 00" comment="lea rdx, [rbx+108h]" />
 		<Instruction code="33 F6" comment="xor esi, esi" />
 		<Instruction code="89 83 XXXX 00 00" comment="mov [rbx+XXXXh], eax" />
 		<Instruction code="48 8D 8B XXXX 00 00" comment="lea rcx, [rbx+XXXXh]" />
@@ -155,9 +155,9 @@
 		<Notify value="NULL" />
 	</Patch>
 	
-	<!-- 0x164: stamina -->
-	<Patch name="CheckBattleMobAlign4" type="notify" search_start="0xBD58F" comment="addr 1.17.2" >
-		<Instruction code="48 8D 93 64 01 00 00" comment="lea rdx, [rbx+164h]" />
+	<!-- 0x168: stamina -->
+	<Patch name="CheckBattleMobAlign4" type="notify" search_start="0xBD58F" comment="addr 1.20" >
+		<Instruction code="48 8D 93 68 01 00 00" comment="lea rdx, [rbx+168h]" />
 		<Instruction code="41 B8 01 00 00 00" comment="mov r8d, 1" />
 		<Instruction code="48 8D 8B XXXX 00 00" comment="lea rcx, [rbx+XXXXh]" />
 		<Instruction code="E8 XXXXXXXX" comment="call XXXXXXXX" />
@@ -199,13 +199,13 @@
 		<Notify value="NULL" />
 	</Patch>
 	
-	<!-- 0x2148: trans_control -->
-	<Patch name="CheckBattleMobAlign6" type="notify" search_start="0xAB20F" comment="addr 1.19.1" >
-		<Instruction code="83 BF 48 21 00 00 0C" comment="cmp dword ptr [rdi+2148h], 0Ch" />
+	<!-- 0x21BC: trans_control -->
+	<Patch name="CheckBattleMobAlign6" type="notify" search_start="0xAB20F" comment="addr 1.20" >
+		<Instruction code="83 BF BC 21 00 00 0C" comment="cmp dword ptr [rdi+21BCh], 0Ch" />
 		<Instruction code="75 XX" comment="jnz +0xXX" />
-		<Instruction code="48 8B 03" comment="mov rax, [rbx]" />
-		<Instruction code="48 8B CB" comment="mov rcx, rbx" />
-		<Instruction code="FF 90 D0 04 00  00" comment="call qword ptr [rax+4D0h]" />
+		<Instruction code="48 8B 06" comment="mov rax, [rsi]" />
+		<Instruction code="48 8B CE" comment="mov rcx, rsi" />
+		<Instruction code="FF 90 08 05 00  00" comment="call qword ptr [rax+508h]" />
 		
 		<Notify value="NULL" />	
 	</Patch>

@@ -16,7 +16,7 @@
 		<Hook value="IsOzaruReplacement" setup="PreBakeSetup" />
 	</Patch>
 	
-	<!-- Signature is 1.17.2 -->
+	<!-- Signature is 1.20 -->
 	<Patch name="SetBodyShape" type="hook" search_start="0x21BA00" comment="Grants regular characters (non-cac) the ability to use body shapes of bcs (required pre-baked.xml)" >	
 		<Instruction code="48 8B C4" comment="mov rax, rsp" />
 		<Instruction code="57" comment="push rdi" />
@@ -38,20 +38,20 @@
 		<Instruction code="0F 84 XX XX 00 00" comment="jz +0xXXXX" />
 		<Instruction code="48 83 79 38 00" comment="cmp qword ptr [rcx+38h], 0" />
 		<Instruction code="0F 84 XX XX 00 00" comment="jz +0xXXXX" />
-		<Instruction code="48 81 C1 48 05 00 00" comment="add rcx, 548h" />
+		<Instruction code="48 81 C1 70 05 00 00" comment="add rcx, 570h" />
 		
 		<Hook value="SetBodyShape_Patched" setup="SetBodyShape_Setup" />	
 	</Patch>
 	
-	<!-- Signature is 1.14 -->
+	<!-- Signature is 1.20 -->
 	<Patch name="AutoBtlPortrait" type="hook" search_start="0x222057" >
 		<Instruction code="E8 XXXXXXXX" comment="call is_cac" />
 		<Instruction code="85 C0" comment="test eax, eax" />
 		<Instruction code="74 7B" comment="jz +0x7B" />
-		<Instruction code="45 8B 85 1C 01 00 00" comment="mov r8d, [r13+11Ch]" />
+		<Instruction code="45 8B 85 20 01 00 00" comment="mov r8d, [r13+120h]" />
 		<Instruction code="41 83 F8 FF" comment="cmp r8d, 0FFFFFFFFh" />
 		<Instruction code="74 6E" comment="jz +0x6E" />
-		<Instruction code="48 8B 05 XXXXXXXX" comment="mov rax,  XG::Game::Common::PortraitManager * XG::Singleton<XG::Game::Common::PortraitManager>::Instance(void)::2::instance" />
+		<Instruction code="48 8B 05 XXXXXXXX" comment="mov rax,  XG::Game::Common::PortraitManager * XG::SingletonXG::Game::Common::PortraitManager::Instance(void)::2::instance" />
 		<Instruction code="48 8B 08" comment="mov rcx, [rax]" />
 		<Instruction code="48 85 C9" comment="test rcx, rcx" />
 		<Instruction code="74 5F" comment="jz +0x5F" />
@@ -60,18 +60,18 @@
 		<Hook type="call" value="UseAutobattlePortrait" />
 	</Patch>
 	
-	<!-- Signature widely changed in 1.06+. Updated in 1.16. -->
+	<!-- Shit changed in 1.20. Not too sure ybout this one still working - Atsu -->
 	<Patch name="ResultPortraitHook" type="hook" search_start="0x168510" >
 		<Instruction code="40 53" comment="push rbx" />
 		<Instruction code="48 8B D9" comment="mov rbx, rcx" />
 		<Instruction code="85 D2" comment="test edx, edx" />
-		<Instruction code="78 3F" comment="js +0x3F" />
+		<Instruction code="78 3E" comment="js +0x3E" />
 		<Instruction code="83 FA 0E" comment="cmp edx, 0Eh" />
-		<Instruction code="73 3A" comment="jnb +0x3A" />
+		<Instruction code="73 39" comment="jnb +0x39" />
 		<Instruction code="48 63 C2" comment="movsxd rax, edx" />
-		<Instruction code="4C 8D 14 40" comment="lea r10, [rax+rax*2]" />
+		<Instruction code="4C 69 D0 90 01 00 00" comment="imul r10,rax,00000190" />
 		<Instruction code="48 8B 44 24 40" comment="mov rax, [rsp+40h]" />
-		<Instruction code="49 C1 E2 07" comment="shl r10, 7" />
+		<Instruction code="45 8B 9C 0A 44 05 00 00" comment="mov r11d,[r10+rcx+00000544]" />
 		
 		<Hook value="ResultPortraits2Patched" setup="ResultPortraits2Setup" />
 	</Patch>
@@ -90,37 +90,37 @@
 		<Hook type="call" value="UseAutobattlePortrait" />
 	</Patch>-->
 	
-	<!-- Signature is 1.18 -->
+	<!-- Signature is 1.20 -->
 	<Patch name="CusAuraMapPatch" type="notify" search_start="0xE37E8" comment="This patch is very sensitive and candidate to be broken on game update. Patch implementation in the dll is also very sensitive to changes." >
-		<Instruction code="83 F8 1B" comment="cmp eax, 1Bh; if cus aura id is greater than 27" />
-		<Instruction code="0F 87 FF 00 00 00" comment="ja end_switch" />
+		<Instruction code="83 F8 1D" comment="cmp eax, 1Dh; if cus aura id is greater than 29" />
+		<Instruction code="0F 87 10 01 00 00" comment="ja end_switch" />
 		<Instruction code="48 63 C8" comment="movsxd rcx, eax" />
 		<Instruction code="48 8D 05 XX XX XX XX" comment="lea rax, XXXXXXXX" />
 		<Instruction code="8B 94 88 XX XX XX XX" comment="mov edx, ds:XXXXXXXX[rax+rcx*4]; edx = switch jump relative" />
 		<Instruction code="48 03 D0" comment="add rdx, rax" />
 		<Instruction code="FF E2" comment="jmp rdx; jump to case" />
 		<Instruction code="BB 05 00 00 00" comment="mov ebx, 5; real_aura = 5" />
-		<Instruction code="E9 DF 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 F0 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 06 00 00 00" comment="mov ebx, 6; real_aura = 6" />
-		<Instruction code="E9 D5 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 E6 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 07 00 00 00" comment="mov ebx, 7; real_aura = 7" />
-		<Instruction code="E9 CB 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 DC 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 0F 00 00 00" comment="mov ebx, 0xF; real_aura = 0xF" />
-		<Instruction code="E9 C1 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 D2 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 0D 00 00 00" comment="mov ebx, 0xD; real_aura = 0xD" />
-		<Instruction code="E9 B7 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 C8 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 0E 00 00 00" comment="mov ebx, 0xE; real_aura = 0xE" />
-		<Instruction code="E9 AD 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 BE 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 12 00 00 00" comment="mov ebx, 0x12; real_aura = 0x12" />
-		<Instruction code="E9 A3 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 B4 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 13 00 00 00" comment="mov ebx, 0x13; real_aura = 0x13" />
-		<Instruction code="E9 99 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 AA 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 18 00 00 00" comment="mov ebx, 0x18; real_aura = 0x18" />
-		<Instruction code="E9 8F 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 A0 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 19 00 00 00" comment="mov ebx, 0x19; real_aura = 0x19" />
-		<Instruction code="E9 85 00 00 00" comment="jmp end_switch" />
+		<Instruction code="E9 96 00 00 00" comment="jmp end_switch" />
 		<Instruction code="BB 14 00 00 00" comment="mov ebx, 0x14; real_aura = 0x14" />
-		<Instruction code="EB 7E" comment="jmp end_switch" />
+		<Instruction code="E9 8C 00 00 00" comment="jmp end_switch" />
 			
 		<Notify value="CusAuraMapPatch" />
 	</Patch>
